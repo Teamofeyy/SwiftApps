@@ -8,57 +8,92 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State var playerCard = "card7"
+    @State var cpuCard = "card13"
+    
+    @State var playerScore = 0
+    @State  var cpuScore = 0
+    
     var body: some View {
         
         ZStack {
-            Color(.systemMint)
+            
+            Image("background-plain")
+                .resizable()
                 .ignoresSafeArea()
-            VStack(alignment: .leading, spacing: 20.0) {
-                Image("niagara falls")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .cornerRadius(15.0)
+            
+            VStack {
+                Spacer()
+                Image("logo")
+                Spacer()
                 HStack {
-                    Text("Niagara falls")
-                        .font(.title)
-                        .fontWeight(.bold)
                     
                     Spacer()
-                    
-                    VStack {
-                        HStack {
-                            Image(systemName: "star.fill")
-                            Image(systemName: "star.fill")
-                            Image(systemName: "star.fill")
-                            Image(systemName: "star.fill")
-                            Image(systemName: "star.leadinghalf.fill")
-                        }
-                        Text("(Reviews 361)")
-                    }
-                    .foregroundColor(.orange)
-                    .font(.caption)
-
+                    Image(playerCard)
+                    Spacer()
+                    Image(cpuCard)
+                    Spacer()
                 }
-                Text("Come visit the falls for an unforgettable experience.")
+                Spacer()
                 
+                
+                Button {
+                    deal()
+                } label: {
+                    Image("button")
+                }
+                
+                Spacer()
                 HStack {
                     Spacer()
-                    Image(systemName: "binoculars.fill")
-                    Image(systemName: "fork.knife")
+                    VStack {
+                        Text("Player")
+                            .font(.headline)
+                            .padding(.bottom, 10.0)
+                        Text(String(playerScore))
+                            .font(.largeTitle)
+                    }
+                    Spacer()
+                    VStack {
+                        Text("CPU")
+                            .font(.headline)
+                            .padding(.bottom, 10.0)
+                        Text(String(cpuScore))
+                            .font(.largeTitle)
+                    }
+                    Spacer()
                 }
-                .foregroundColor(.gray)
-                .font(.caption)
-
+                .foregroundColor(.white)
+                
+                Spacer()
             }
-            .padding()
-            .background(Rectangle()
-                .foregroundColor(.white))
-                .cornerRadius(15)
-                .shadow(radius: 15)
-            .padding()
         }
         
 
+    }
+    
+    func deal() {
+        // Randomize the player card
+        var playerCardValue = Int.random(in: 2...14)
+        playerCard = "card" + String(playerCardValue)
+        
+        //Randomize the cpus card
+        var cpuCardValue = Int.random(in: 2...14)
+        cpuCard = "card" + String(cpuCardValue)
+        
+        //Update the scores
+        if playerCardValue > cpuCardValue {
+            playerScore += 1
+        }
+        else if cpuCardValue > playerCardValue {
+            cpuScore += 1
+        }
+        
+        if playerScore == 11 || cpuScore == 11 {
+            playerScore = 0
+            cpuScore = 0
+        }
     }
 }
 
